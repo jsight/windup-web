@@ -73,8 +73,8 @@ public class FreemarkerServlet extends freemarker.ext.servlet.FreemarkerServlet
             });
 
             Map<String, String> keycloakProperties = new HashMap<>();
-            keycloakProperties.put(PUBLIC_KEY, System.getProperty("keycloak.realm.public.key"));
-            keycloakProperties.put(SERVER_URL, System.getProperty("keycloak.server.url"));
+            keycloakProperties.put(PUBLIC_KEY, System.getProperty(KeycloakConfigurationConstants.SYSPROP_KEYCLOAK_REALM_PUBLIC_KEY));
+            keycloakProperties.put(SERVER_URL, System.getProperty(KeycloakConfigurationConstants.SYSPROP_KEYCLOAK_SERVER_URL));
 
             hashModel.put(KEYCLOAK, keycloakProperties);
         }

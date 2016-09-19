@@ -17,6 +17,9 @@
 
     <script src="${keycloak.serverUrl}/js/keycloak.js"></script>
 
+    <script src="autologin?variable=autologinBearerToken"></script>
+    <script src="autologin.js"></script>
+
     <script>
         // Append a script tag pointing to a javascript file that requires authentication. Now that we have
         // a token, this will succeed and we will have an authentication session in the webapp as well.
@@ -27,20 +30,7 @@
         }
 
         $(function() {
-            var keycloak = new Keycloak('keycloak.json');
-            keycloak.init({ onLoad: 'check-sso' }).success(function(authenticated) {
-                if (authenticated) {
-                    console.log("User is logged in: " + keycloak.token);
-
-                    appendAuthenticatedScript();
-                } else {
-                    console.log("User is not logged in");
-                    $('#loading').hide();
-                    $('#loginRequired').show();
-                }
-            }).error(function(error) {
-                console.log("Error checking authentication due to: " + error);
-            });
+            //var keycloak = new Keycloak('keycloak.json');
 
             $('#btnLogin').click(function () {
                 keycloak.init({ onLoad: 'login-required' }).success(function(authenticated) {
