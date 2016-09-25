@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {NgForm} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Observable} from 'rxjs/Observable';
 
 import {AnalysisContext} from "windup-services";
 import {FormComponent} from "./formcomponent.component";
@@ -124,6 +125,10 @@ export class AnalysisContextFormComponent extends FormComponent implements OnIni
                         } else {
                             // for migration path, store the id only
                             this.analysisContext.migrationPath = <MigrationPath>{ id: this.analysisContext.migrationPath.id };
+                            if (this.analysisContext.packages == null || this.analysisContext.packages.length == 0)
+                                this.packages = [ {prefix: ""} ];
+                            else
+                                this.packages = <[{prefix:string}]>this.analysisContext.packages.map(it => { return { prefix: it }});
 
                             if (this.analysisContext.includePackages == null || this.analysisContext.includePackages.length == 0) {
                                 this.analysisContext.includePackages = [];
@@ -157,7 +162,27 @@ export class AnalysisContextFormComponent extends FormComponent implements OnIni
         });
     }
 
+    addScanPackage() {
+        this.packages.push({prefix: ""});
+    }
+
+    removeScanPackage(index:number) {
+        this.packages.splice(index, 1);
+    }
+
+    addExcludePackage() {
+        this.excludePackages.push({prefix: ""});
+    }
+
+    removeExcludePackage(index:number) {
+        this.excludePackages.splice(index, 1);
+    }
+
     save() {
+        this.analysisContext.packages = this.packages.filter(it => { return it.prefix != null && it.prefix.trim() != "" }).map(it => { return it.prefix; });
+        this.analysisContext.excludePackages = this.excludePackages.filter(it => { return it.prefix != null && it.prefix.trim() != "" }).map(it => { return it.prefix; });
+        console.log("Should save with packages: " + JSON.stringify(this.analysisContext.packages) + " filtered from: " + JSON.stringify(this.packages));
+
         if (this.analysisContext.id != null) {
             console.log("Updating analysis context: " + this.analysisContext.migrationPath.id);
             this._analysisContextService.update(this.analysisContext).subscribe(

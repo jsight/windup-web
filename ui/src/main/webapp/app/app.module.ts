@@ -112,12 +112,7 @@ import {TechnologiesReport} from "./components/reports/technologies/technologies
         PackageRegistryService,
         {
             provide: Http,
-            useFactory:
-                (
-                    backend: XHRBackend,
-                    defaultOptions: RequestOptions,
-                    keycloakService: KeycloakService
-                ) => new WindupHttpService(backend, defaultOptions, keycloakService),
+            useFactory: httpProvider,
             deps: [XHRBackend, RequestOptions, KeycloakService]
         },
         {
@@ -128,3 +123,8 @@ import {TechnologiesReport} from "./components/reports/technologies/technologies
     bootstrap:    [ AppComponent ]
 })
 export class AppModule { }
+
+export function httpProvider(backend: XHRBackend, defaultOptions: RequestOptions, keycloakService: KeycloakService) {
+    console.log("Should create windup http service: " + backend + ", " + defaultOptions + ", keycloak: " + keycloakService);
+    return new WindupHttpService(backend, defaultOptions, keycloakService);
+}
