@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import 'rxjs/Rx';
 
-import {FileSelectDirective, FileDropDirective, FileUploader} from 'ng2-file-upload/ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { AppComponent }  from './components/app.component';
 import { routing, appRoutingProviders } from './app.routing';
 
@@ -57,7 +57,8 @@ import {TechnologiesReport} from "./components/reports/technologies/technologies
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
-        routing
+        routing,
+        FileUploadModule
     ],
     declarations: [
         // pages
@@ -84,9 +85,7 @@ import {TechnologiesReport} from "./components/reports/technologies/technologies
         ProgressBarComponent,
         RulesModalComponent,
         TechnologyComponent,
-        
-        FileSelectDirective,
-        FileDropDirective,
+
         UploadQueueComponent,
         UploadProgressbarComponent,
         CustomRuleSelectionComponent,
@@ -117,7 +116,7 @@ import {TechnologiesReport} from "./components/reports/technologies/technologies
         },
         {
             provide: FileUploader,
-            useValue: new FileUploader({})
+            useValue: fileUploaderValue
         }
     ],
     bootstrap:    [ AppComponent ]
@@ -127,4 +126,8 @@ export class AppModule { }
 export function httpProvider(backend: XHRBackend, defaultOptions: RequestOptions, keycloakService: KeycloakService) {
     console.log("Should create windup http service: " + backend + ", " + defaultOptions + ", keycloak: " + keycloakService);
     return new WindupHttpService(backend, defaultOptions, keycloakService);
+}
+
+export function fileUploaderValue () {
+    return new FileUploader({});
 }

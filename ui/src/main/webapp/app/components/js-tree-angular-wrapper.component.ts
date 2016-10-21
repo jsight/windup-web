@@ -7,7 +7,7 @@ import $ from 'jquery';
 import 'jstree';
 
 @Component({
-    templateUrl: 'app/components/js-tree-angular-wrapper.component.html',
+    templateUrl: 'js-tree-angular-wrapper.component.html',
     selector: 'app-js-tree-wrapper'
 })
 export class JsTreeAngularWrapperComponent implements OnInit, OnChanges {

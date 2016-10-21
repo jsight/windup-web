@@ -10,6 +10,7 @@ import {WindupExecution} from "windup-services";
 import {RegisteredApplicationService} from "../services/registeredapplication.service";
 import {NotificationService} from "../services/notification.service";
 import {MigrationProjectService} from "../services/migrationproject.service";
+import {MigrationProject} from "windup-services";
 
 @Component({
     selector: 'application-list',

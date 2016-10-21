@@ -13,7 +13,7 @@ import {FormComponent} from "./formcomponent.component";
 import {Constants} from "../constants";
 
 @Component({
-    templateUrl: './registerapplicationform.component.html'
+    templateUrl: 'registerapplicationform.component.html'
 })
 export class RegisterApplicationFormComponent extends FormComponent implements OnInit {
     registrationForm: FormGroup;

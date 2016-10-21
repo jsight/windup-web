@@ -6,7 +6,6 @@
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "lite": "lite-server",
-    "typings": "typings",
     "postinstall": "./node_modules/.bin/typings install"
   },
   "dependencies": {
@@ -46,6 +45,12 @@
   "devDependencies": {
     "typescript": "2.0.3",
     "typings": "1.4.0",
-    "jasmine-core": "2.4.1"
+    "jasmine-core": "2.4.1",
+
+    "@angular/compiler-cli": "^0.6.3",
+    "rollup": "^0.36.0",
+    "rollup-plugin-commonjs": "^5.0.4",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1"
   }
 }
