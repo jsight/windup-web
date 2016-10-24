@@ -2,6 +2,8 @@ import {ComponentFixture, TestBed, async, ComponentFixtureAutoDetect, fakeAsync,
 import {By} from "@angular/platform-browser";
 import {DebugElement, Component, ViewChild} from "@angular/core";
 import {ModalDialogComponent} from "../../../src/app/components/modal-dialog.component";
+import * as $ from 'jquery';
+import 'bootstrap';
 
 let host: ModalDialogHost;
 let hostFixture: ComponentFixture<ModalDialogHost>;
