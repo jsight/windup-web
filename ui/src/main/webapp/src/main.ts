@@ -3,7 +3,6 @@ import {NgZone, enableProdMode} from "@angular/core";
 import {KeycloakService} from "./app/services/keycloak.service";
 import {AppModule} from "./app/app.module";
 
-require('./keycloak.json');
 require('./keycloak.json.ftl');
 require('../css/windup-web.css');
 

@@ -1,3 +1,13 @@
+import * as $ from 'jquery';
+
+// Stupid workaround for jQuery
+// Some jQuery modules require jQuery to be global variable
+// But some of them (and jQuery itself) already support UMD
+// So jQuery must be manually registered as global variable and webpack must be forced to load those modules
+// into global scope in webpack config
+window['jQuery'] = $;
+window['$'] = $;
+
 // Angular 2
 import "@angular/platform-browser";
 import "@angular/platform-browser-dynamic";
@@ -9,28 +19,15 @@ import "@angular/router";
 import "rxjs";
 import "@angularclass/hmr";
 
-// Stupid workaround for jQuery
-// Some jQuery modules require jQuery to be global variable
-// But some of them (and jQuery itself) already support UMD
-// So jQuery must be manually registered as global variable and webpack must be forced to load those modules
-// into global scope in webpack config
-import * as $ from 'jquery';
-
-window['jQuery'] = $;
-window['$'] = $;
-
 // Other vendors for example jQuery, Lodash or Bootstrap
 // You can import js, ts, css, sass, ...
 
 // js
-require('../node_modules/jquery/dist/jquery');
 require('../node_modules/bootstrap/dist/js/bootstrap');
 
 require('../node_modules/datatables/media/js/jquery.dataTables');
 require('../node_modules/datatables/media/css/jquery.dataTables.min.css');
 
-//require('../node_modules/datatables/media/js/jquery.dataTables.min.js');
-//require('../node_modules/drmonty-datatables-colvis/js/dataTables.colVis.min.js');
 require('../node_modules/drmonty-datatables-colvis/js/dataTables.colVis');
 require('../node_modules/datatables-colreorder/js/dataTables.colReorder.js');
 

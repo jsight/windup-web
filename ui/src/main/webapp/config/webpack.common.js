@@ -31,6 +31,7 @@ module.exports = {
             },
             {
                 test: /\.(json|ftl)$/,
+                exclude: /index\.html\.ftl/,
                 loader: 'file?name=[name].[ext]'
             },
             {
@@ -40,7 +41,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: helpers.root('src', 'app'),
-                loader: ExtractTextPlugin.extract({ fallbackLoader: 'style', loader: ['css?sourceMap'] })
+                loader: ExtractTextPlugin.extract({ fallbackLoader: 'style', loader: ['css?sourceMap'], publicPath: '../' })
             },
             {
                 test: /\.css$/,
@@ -72,7 +73,8 @@ module.exports = {
             name: ['app', 'vendor', 'polyfills']
         }),
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
+            template: 'text!src/index.html.ftl',
+            filename: 'index.html.ftl'
         }),
         // This is needed to suppress warning caused by some angular issue
         // see https://github.com/angular/angular/issues/11580
@@ -82,10 +84,11 @@ module.exports = {
             helpers.root('./src'), // location of your src
             {} // a map of your routes
         )
-    ],
+    ]
     // TODO: Find out if it helps,
     // tried this to get jquery externally loaded into global scope using <script> tag
-    externals: {
+/*    externals: {
         'jquery': 'jQuery'
     }
+*/
 };
