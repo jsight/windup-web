@@ -44,6 +44,9 @@ require('../node_modules/bootstrap-treeview/dist/bootstrap-treeview.min.js');
 require('../node_modules/google-code-prettify/bin/prettify.min.js');
 require('../node_modules/jquery-match-height/dist/jquery.matchHeight-min.js');
 
+require('../node_modules/jstree/dist/jstree');
+require('../node_modules/jstree/dist/themes/default/style.min.css');
+
 // css
 require('../node_modules/patternfly/dist/css/patternfly.min.css');
 require('../node_modules/patternfly/dist/css/patternfly-additions.min.css');

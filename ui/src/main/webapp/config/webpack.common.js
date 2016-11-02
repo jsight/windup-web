@@ -60,8 +60,12 @@ module.exports = {
             // They can load using AMD or CommonJS, but it doesn't work properly
             // They depend on global jQuery variable
             {
-                test: /dataTables*\.js|jquery*\.js|colVis*\.js|colReorder*\.js/,
+                test: /dataTables*\.js|jquery*\.js|colVis*\.js|colReorder*\.js|jstree\.js/,
                 loader: "imports?define=>false!imports?exports=>false"
+            },
+            {
+                test: /jstree\.js/,
+                loader: 'imports?define=>false!imports?exports=>false!imports?module=>false'
             }
         ]
     },

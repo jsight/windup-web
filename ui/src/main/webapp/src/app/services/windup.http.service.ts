@@ -11,18 +11,20 @@ export class WindupHttpService extends Http {
     }
 
     private setToken(options: RequestOptionsArgs) {
-        if (options == null || KeycloakService.auth == null || KeycloakService.auth.authz == null || KeycloakService.auth.authz.token == null) {
-            console.log("Need a token, but no token is available, not setting bearer token.");
-            return;
-        }
+        this._keycloakService.getToken().subscribe(
+            token => {
+                if (!options.hasOwnProperty('headers')) {
+                    options.headers = new Headers();
+                }
 
-        if (!options.hasOwnProperty('headers')) {
-            options.headers = new Headers();
-        }
-
-        if (!options.headers.has('Authorization')) {
-            options.headers.set('Authorization', 'Bearer ' + KeycloakService.auth.authz.token);
-        }
+                if (!options.headers.has('Authorization')) {
+                    options.headers.set('Authorization', 'Bearer ' + token);
+                }
+            },
+            error => {
+                console.log("Need a token, but no token is available, not setting bearer token.");
+            }
+        );
     }
 
     private configureRequest(f:Function, url:string | Request, options:RequestOptionsArgs = {}, body?: any):Observable<Response> {

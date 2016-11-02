@@ -1,14 +1,21 @@
-import {Component} from '@angular/core';
+import {Component, OnInit, ElementRef} from '@angular/core';
 import {Router} from "@angular/router";
 import {KeycloakService} from "../services/keycloak.service";
+import * as $ from 'jquery';
+import 'bootstrap';
+import {_keyValueDiffersFactory} from "@angular/core/src/application_module";
 
 @Component({
     selector: 'navbar',
     templateUrl: 'navbar.component.html'
 })
-export class NavbarComponent {
-    constructor(private _keycloak:KeycloakService, private _router:Router) {
+export class NavbarComponent implements OnInit {
+    constructor(private _keycloak:KeycloakService, private _router:Router, private _element: ElementRef) {
 
+    }
+
+    ngOnInit(): void {
+        $(this._element.nativeElement).find('.dropdown-toggle').dropdown();
     }
 
     get username():String {
@@ -17,7 +24,7 @@ export class NavbarComponent {
 
     logout(event:Event):void {
         event.preventDefault();
-        KeycloakService.logout();
+        this._keycloak.logout();
     }
 
     isActive(link:HTMLAnchorElement):boolean {

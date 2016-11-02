@@ -116,7 +116,7 @@
                 <version>2.4</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <!-- warSourceExcludes>app/**/*.ts</warSourceExcludes -->
+                    <warSourceExcludes>app,config,src,tests,typings,node_modules,.gitignore,*.js,*.json,*.html</warSourceExcludes>
                 </configuration>
             </plugin>
 
@@ -154,8 +154,55 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>webpack-build</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+
+                        <configuration>
+                            <executable>./node_modules/.bin/webpack</executable>
+                            <workingDirectory>src/main/webapp</workingDirectory>
+                            <arguments>
+                                <argument>--progress</argument>
+                                <argument>--profile</argument>
+                                <argument>--bail</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>com.kelveden</groupId>
+                <artifactId>maven-karma-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>src/main/webapp</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <karmaExecutable>node_modules/.bin/karma</karmaExecutable>
+                    <configFile>src/main/webapp/karma.conf.js</configFile>
+                    <junitReportFile>src/main/webapp/test-results.xml</junitReportFile>
+                    <reportsDirectory>${project.build.directory}/karma-reports</reportsDirectory>
+                    <browsers>PhantomJS</browsers>
+                    <autoWatch>false</autoWatch>
+                    <singleRun>true</singleRun>
+                    <colors>true</colors>
+                    <karmaFailureIgnore>false</karmaFailureIgnore>
+                    <reporters>dots,junit</reporters>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
