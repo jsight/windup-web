@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, NgZone, ViewChild} from "@angular/core";
+import {Component, OnDestroy, OnInit, NgZone, ViewChild, AfterViewInit} from "@angular/core";
 import {Router} from "@angular/router";
 
 import {MigrationProjectService} from "../services/migration-project.service";
@@ -13,7 +13,7 @@ import {ConfirmationModalComponent} from "./confirmation-modal.component";
         `a { cursor: pointer; }`
     ]
 })
-export class ProjectListComponent implements OnInit, OnDestroy {
+export class ProjectListComponent implements OnInit, OnDestroy, AfterViewInit {
     projects:MigrationProject[];
 
     @ViewChild('deleteProjectModal')
@@ -31,6 +31,14 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     ngOnInit():any {
         this.getMigrationProjects();
         this._refreshIntervalID = setInterval(() => this.getMigrationProjects(), 30000);
+    }
+
+    ngAfterViewInit(): void {
+        $('#myTabs a').click(function(e) {
+            console.log("Should show: " + this);
+            e.preventDefault();
+            $(this).tab('show');
+        });
     }
 
     ngOnDestroy():any {

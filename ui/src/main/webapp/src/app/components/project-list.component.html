@@ -2,6 +2,15 @@
     Project List
     <button (click)="createMigrationProject()" class="btn btn-primary" type="button">Create Migration Project</button>
 </h1>
+
+<ul id="mytabs" class="nav nav-tabs">
+    <li class="active"><a href="#">Tab One</a></li>
+    <li><a href="#">Tab Two</a></li>
+    <li><a href="#">Tab Three</a></li>
+    <li><a href="#">Tab Four</a></li>
+    <li><a href="#">Tab Five</a></li>
+</ul>
+
 <h3 *ngIf="errorMessage != null">{{errorMessage}}</h3>
 <table class="datatable table table-striped table-bordered">
     <thead>
