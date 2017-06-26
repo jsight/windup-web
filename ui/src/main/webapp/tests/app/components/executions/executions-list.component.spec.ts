@@ -163,12 +163,9 @@ describe('ExecutionsListComponent', () => {
             let stateText = state.textContent ? state.textContent.trim() : "";
 
             if (stateText.startsWith("Completed")) {
-                // details, view static report, view dynamic report, delete
-                expect(el.children[COL_ACTIONS].children.length).toBe(4);
-                expect(el.children[COL_ACTIONS].children[ACTION_DETAIL].title).toEqual('Details');
-                expect(el.children[COL_ACTIONS].children[ACTION_STATIC_REPORT].children[0].title).toEqual('Show reports');
-                expect(el.children[COL_ACTIONS].children[ACTION_DELETE].title).toEqual('Delete');
-                expect(el.children[COL_ACTIONS].children[ACTION_DYNAMIC_REPORT].text.trim()).toEqual('View Reports');
+                expect(el.children[COL_ACTIONS].children.length).toBe(2);
+                expect(el.children[COL_ACTIONS].children[0].title).toEqual('Details');
+                expect(el.children[COL_ACTIONS].children[1].title).toEqual('Delete');
             } else {
                 expect(el.children[COL_ACTIONS].children.length).toBe(2);
                 expect(el.children[COL_ACTIONS].textContent.trim()).toEqual('');
