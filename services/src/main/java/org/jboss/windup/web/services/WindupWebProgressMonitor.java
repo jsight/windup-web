@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
-import javax.jms.JMSContext;
 import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
@@ -68,16 +67,8 @@ public class WindupWebProgressMonitor implements WindupProgressMonitor
                 }
 
                 lastSendTime = System.currentTimeMillis();
-                JMSContext messaging = ServiceUtil.getJMSContext();
-                try
-                {
-                    javax.jms.Queue statusUpdateQueue = ServiceUtil.getJMSQueue("java:/queues/" + MessagingConstants.STATUS_UPDATE_QUEUE);
-
-                    messaging.createProducer().send(statusUpdateQueue, execution);
-                } finally
-                {
-                    messaging.close();
-                }
+                javax.jms.Queue statusUpdateQueue = ServiceUtil.getJMSQueue("java:/queue/" + MessagingConstants.STATUS_UPDATE_QUEUE);
+                ServiceUtil.sendJMSMessage(statusUpdateQueue, execution);
 
                 if (manualTransactions)
                     userTransaction.commit();

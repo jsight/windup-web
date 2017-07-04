@@ -5,7 +5,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import javax.jms.JMSContext;
 import javax.jms.Queue;
 import javax.jms.Topic;
 import javax.persistence.EntityManager;
@@ -16,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.windup.web.addons.websupport.WebPathUtil;
 import org.jboss.windup.web.furnaceserviceprovider.FromFurnace;
+import org.jboss.windup.web.services.ServiceUtil;
 import org.jboss.windup.web.services.messaging.ExecutionStateCache;
 import org.jboss.windup.web.services.messaging.MessagingConstants;
 import org.jboss.windup.web.services.model.AnalysisContext;
@@ -56,16 +56,13 @@ public class WindupExecutionService
     @Inject
     private MigrationProjectService migrationProjectService;
 
-    @Inject
-    private JMSContext messaging;
-
-    @Resource(lookup = "java:/queues/" + MessagingConstants.EXECUTOR_QUEUE)
+    @Resource(lookup = "java:/queue/" + MessagingConstants.EXECUTOR_QUEUE)
     private Queue executorQueue;
 
-    @Resource(lookup = "java:/queues/" + MessagingConstants.STATUS_UPDATE_QUEUE)
+    @Resource(lookup = "java:/queue/" + MessagingConstants.STATUS_UPDATE_QUEUE)
     private Queue statusUpdateQueue;
 
-    @Resource(lookup = "java:/topics/" + MessagingConstants.CANCELLATION_TOPIC)
+    @Resource(lookup = "java:/topic/" + MessagingConstants.CANCELLATION_TOPIC)
     private Topic cancellationTopic;
 
 
@@ -131,7 +128,7 @@ public class WindupExecutionService
         entityManager.merge(execution);
 
         // See ExecutorMDB
-        messaging.createProducer().send(executorQueue, execution);
+        ServiceUtil.sendJMSMessage(executorQueue, execution);
 
         return execution;
     }
@@ -145,8 +142,8 @@ public class WindupExecutionService
 
         execution.setState(ExecutionState.CANCELLED);
 
-        messaging.createProducer().send(statusUpdateQueue, execution);
-        messaging.createProducer().send(cancellationTopic, execution);
+        ServiceUtil.sendJMSMessage(statusUpdateQueue, execution);
+        ServiceUtil.sendJMSMessage(cancellationTopic, execution);
     }
 
     public void deleteExecution(Long executionID)

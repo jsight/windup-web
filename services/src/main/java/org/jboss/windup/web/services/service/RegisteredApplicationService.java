@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.jms.JMSContext;
+import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +34,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.jboss.windup.web.addons.websupport.WebPathUtil;
 import org.jboss.windup.web.addons.websupport.services.FileNameSanitizer;
 import org.jboss.windup.web.furnaceserviceprovider.FromFurnace;
+import org.jboss.windup.web.services.ServiceUtil;
 import org.jboss.windup.web.services.messaging.MessagingConstants;
 import org.jboss.windup.web.services.model.AnalysisContext;
 import org.jboss.windup.web.services.model.MigrationProject;
@@ -62,10 +63,7 @@ public class RegisteredApplicationService
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Inject
-    private JMSContext messaging;
-
-    @Resource(lookup = "java:/queues/" + MessagingConstants.PACKAGE_DISCOVERY_QUEUE)
+    @Resource(lookup = "java:/queue/" + MessagingConstants.PACKAGE_DISCOVERY_QUEUE)
     private Queue packageDiscoveryQueue;
 
     public Collection<RegisteredApplication> getAllApplications()
@@ -480,6 +478,6 @@ public class RegisteredApplicationService
 
     protected void enqueuePackageDiscovery(RegisteredApplication application)
     {
-        this.messaging.createProducer().send(this.packageDiscoveryQueue, application);
+        ServiceUtil.sendJMSMessage(this.packageDiscoveryQueue, application);
     }
 }

@@ -1,8 +1,16 @@
 package org.jboss.windup.web.services;
 
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
-import javax.jms.JMSContext;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.jms.Queue;
+import javax.jms.Session;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.transaction.UserTransaction;
@@ -14,6 +22,7 @@ import javax.transaction.UserTransaction;
  */
 public class ServiceUtil
 {
+    private static final Logger LOG = Logger.getLogger(ServiceUtil.class.getName());
 
     /**
      * Lookup a JMS Queue.
@@ -23,13 +32,37 @@ public class ServiceUtil
         return lookup("JMSQueue", Queue.class, jndiName);
     }
 
+    public static void sendJMSMessage(Destination destination, Serializable serializable)
+    {
+        try (Connection messaging = getJMSContext())
+        {
+            try (Session session = messaging.createSession(true, Session.AUTO_ACKNOWLEDGE))
+            {
+                Message message = session.createObjectMessage(serializable);
+                session.createProducer(destination).send(message);
+            }
+            LOG.info("Message sent: " + serializable);
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, "Error rolling back message send due to: " + e.getMessage(), e);
+        }
+    }
+
     /**
      * Lookup the JMSContext from JNDI.
      */
-    public static JMSContext getJMSContext()
+    public static Connection getJMSContext()
     {
         ConnectionFactory connectionFactory = lookup("JMSContext", ConnectionFactory.class, "java:/ConnectionFactory");
-        return connectionFactory.createContext();
+        try
+        {
+            return connectionFactory.createConnection();
+        }
+        catch (JMSException e)
+        {
+            throw new RuntimeException("Connection to JMS Failed due to: " + e.getMessage());
+        }
     }
 
     /**

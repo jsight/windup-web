@@ -22,9 +22,9 @@ import org.jboss.windup.web.services.model.WindupExecution;
  */
 @MessageDriven(activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
-        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "AUTO_ACKNOWLEDGE"),
+        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
         @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "10"),
-        @ActivationConfigProperty(propertyName = "destination", propertyValue = MessagingConstants.CANCELLATION_TOPIC)
+        @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/" + MessagingConstants.CANCELLATION_TOPIC)
 })
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class ExecutionCancellationMDB extends AbstractMDB implements MessageListener

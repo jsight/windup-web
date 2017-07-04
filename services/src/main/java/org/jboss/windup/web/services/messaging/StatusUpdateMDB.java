@@ -45,9 +45,9 @@ import org.jboss.windup.web.services.websocket.WSJMSMessage;
  */
 @MessageDriven(activationConfig = {
             @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-            @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "AUTO_ACKNOWLEDGE"),
+            @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
             @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1"),
-            @ActivationConfigProperty(propertyName = "destination", propertyValue = MessagingConstants.STATUS_UPDATE_QUEUE),
+            @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/" + MessagingConstants.STATUS_UPDATE_QUEUE),
 })
 public class StatusUpdateMDB extends AbstractMDB implements MessageListener
 {

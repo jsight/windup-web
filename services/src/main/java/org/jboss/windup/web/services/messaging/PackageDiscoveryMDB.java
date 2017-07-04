@@ -20,9 +20,9 @@ import org.jboss.windup.web.services.model.RegisteredApplication;
  */
 @MessageDriven(activationConfig = {
             @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-            @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "AUTO_ACKNOWLEDGE"),
+            @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
             @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1"),
-            @ActivationConfigProperty(propertyName = "destination", propertyValue = MessagingConstants.PACKAGE_DISCOVERY_QUEUE),
+            @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/" + MessagingConstants.PACKAGE_DISCOVERY_QUEUE),
 })
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class PackageDiscoveryMDB extends AbstractMDB implements MessageListener
@@ -35,11 +35,13 @@ public class PackageDiscoveryMDB extends AbstractMDB implements MessageListener
     @Override
     public void onMessage(Message message)
     {
+        LOG.info("Received package discovery request: " + message);
         if (!validatePayload(RegisteredApplication.class, message))
             return;
 
         try
         {
+            LOG.info("Processing package discovery request: " + ((ObjectMessage)message).getObject());
             RegisteredApplication application = (RegisteredApplication) ((ObjectMessage) message).getObject();
 
             PackageDiscoveryTask executionTask = packageDiscoveryTaskInstance.get();
