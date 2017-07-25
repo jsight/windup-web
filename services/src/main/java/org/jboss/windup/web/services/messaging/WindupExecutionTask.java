@@ -25,6 +25,7 @@ import org.jboss.windup.exec.configuration.options.ExplodedAppInputOption;
 import org.jboss.windup.web.addons.websupport.WebPathUtil;
 import org.jboss.windup.web.addons.websupport.services.WindupExecutorService;
 import org.jboss.windup.web.furnaceserviceprovider.FromFurnace;
+import org.jboss.windup.web.furnaceserviceprovider.WebProperties;
 import org.jboss.windup.web.services.WindupWebProgressMonitor;
 import org.jboss.windup.web.services.model.AdvancedOption;
 import org.jboss.windup.web.services.model.AnalysisContext;
@@ -32,6 +33,7 @@ import org.jboss.windup.web.services.model.ExecutionState;
 import org.jboss.windup.web.services.model.MigrationPath;
 import org.jboss.windup.web.services.model.Package;
 import org.jboss.windup.web.services.model.RegisteredApplication;
+import org.jboss.windup.web.services.model.RulesPath;
 import org.jboss.windup.web.services.model.WindupExecution;
 import org.jboss.windup.web.services.service.ConfigurationOptionsService;
 
@@ -103,7 +105,14 @@ public class WindupExecutionTask implements Runnable
             }
 
             Collection<Path> rulesPaths = analysisContext.getRulesPaths().stream()
-                        .map((rulesPath) -> Paths.get(rulesPath.getPath()))
+                        .map(rulesPath -> {
+                            if (rulesPath.getRulesPathType() != RulesPath.RulesPathType.SYSTEM_PROVIDED)
+                                return Paths.get(rulesPath.getPath());
+
+                            // Make sure to use the latest and local rules path... the system path doesn't
+                            // have to come from the request itself and may actually vary from node to node.
+                            return WebProperties.getInstance().getRulesRepository().toAbsolutePath().normalize();
+                        })
                         .collect(Collectors.toList());
 
             List<Path> inputPaths = this.analysisContext
