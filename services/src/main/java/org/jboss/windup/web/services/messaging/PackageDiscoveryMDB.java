@@ -13,6 +13,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
+import org.jboss.ejb3.annotation.Pool;
 import org.jboss.windup.web.services.model.RegisteredApplication;
 
 /**
@@ -22,8 +23,10 @@ import org.jboss.windup.web.services.model.RegisteredApplication;
             @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
             @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
             @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1"),
+            @ActivationConfigProperty(propertyName = "maxSessions", propertyValue = "1"),
             @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/" + MessagingConstants.PACKAGE_DISCOVERY_QUEUE),
 })
+@Pool(value = "mdb-strict-max-pool")
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class PackageDiscoveryMDB extends AbstractMDB implements MessageListener
 {

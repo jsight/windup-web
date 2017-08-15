@@ -1,12 +1,12 @@
 <div>
     <h2 i18n="heading|Active Executions">Active Analysis</h2>
-    <div *ngIf="mainExecution != null">
-        <wu-progress-bar *ngIf="mainExecution.currentTask || activeExecutions.length == 1"
-             [taskName]="mainExecution.currentTask"
-             [currentValue]="mainExecution.workCompleted"
+    <div *ngFor="let execution of activeExecutions">
+        <wu-progress-bar
+             [taskName]="execution.currentTask"
+             [currentValue]="execution.workCompleted"
              [minValue]="0"
-             [maxValue]="mainExecution.totalWork"
-             [activeExecutionId]="mainExecution.id">
+             [maxValue]="execution.totalWork"
+             [activeExecutionId]="execution.id">
         </wu-progress-bar>
     </div>
     <div *ngIf="mainExecution == null">

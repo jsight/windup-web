@@ -13,6 +13,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
+import org.jboss.ejb3.annotation.Pool;
 import org.jboss.windup.web.services.model.WindupExecution;
 
 /**
@@ -24,8 +25,10 @@ import org.jboss.windup.web.services.model.WindupExecution;
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
         @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "10"),
+        @ActivationConfigProperty(propertyName = "maxSessions", propertyValue = "10"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/" + MessagingConstants.CANCELLATION_TOPIC)
 })
+@Pool(value = "mdb-strict-max-pool")
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class ExecutionCancellationMDB extends AbstractMDB implements MessageListener
 {
@@ -53,3 +56,5 @@ public class ExecutionCancellationMDB extends AbstractMDB implements MessageList
         }
     }
 }
+
+
