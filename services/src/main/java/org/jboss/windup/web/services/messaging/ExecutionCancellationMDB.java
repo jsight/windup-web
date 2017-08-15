@@ -37,6 +37,7 @@ public class ExecutionCancellationMDB extends AbstractMDB implements MessageList
     @Override
     public void onMessage(Message message)
     {
+        LOG.info("Received execution cancellation request: " + message);
         if (!validatePayload(WindupExecution.class, message))
             return;
 

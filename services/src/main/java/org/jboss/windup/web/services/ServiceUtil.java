@@ -9,6 +9,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.naming.InitialContext;
@@ -39,7 +40,10 @@ public class ServiceUtil
             try (Session session = messaging.createSession(true, Session.AUTO_ACKNOWLEDGE))
             {
                 Message message = session.createObjectMessage(serializable);
-                session.createProducer(destination).send(message);
+                try (MessageProducer producer = session.createProducer(destination))
+                {
+                    producer.send(message);
+                }
             }
             LOG.info("Message sent: " + serializable);
         }

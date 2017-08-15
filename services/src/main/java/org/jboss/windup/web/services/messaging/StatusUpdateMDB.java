@@ -83,6 +83,8 @@ public class StatusUpdateMDB extends AbstractMDB implements MessageListener
     @Override
     public void onMessage(Message message)
     {
+        LOG.info("1Received execution update event: " + message);
+
         // Make sure that we are receiving the correct type of message
         if (!validatePayload(WindupExecution.class, message))
             return;

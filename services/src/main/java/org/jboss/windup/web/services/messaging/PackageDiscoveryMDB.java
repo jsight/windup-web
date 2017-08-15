@@ -35,7 +35,7 @@ public class PackageDiscoveryMDB extends AbstractMDB implements MessageListener
     @Override
     public void onMessage(Message message)
     {
-        LOG.info("Received package discovery request: " + message);
+        LOG.info("1Received package discovery request: " + message);
         if (!validatePayload(RegisteredApplication.class, message))
             return;
 

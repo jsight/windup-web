@@ -37,6 +37,7 @@ public class ExecutorMDB extends AbstractMDB implements MessageListener
     @Override
     public void onMessage(Message message)
     {
+        LOG.info("Received execution request: " + message);
         if (!validatePayload(WindupExecution.class, message))
             return;
 
